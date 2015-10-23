@@ -36,3 +36,6 @@ class Node(object):
             self._peers.append(node)
         elif relationship == Relationship.P:
             self._providers.append(node)
+
+    def __repr__(self):
+        return '(' + str(self.id) + ')'

@@ -37,5 +37,12 @@ class Network(object):
         # add the edge to the tail node
         self._nodes[tail_netid].add_link(self._nodes[head_netid], relationship)
 
-
-
+    def __repr__(self):
+        representation = 'Network:\n'
+        for node in self._nodes:
+            representation += '(' + \
+                              'id=' + str(node.id) + ', ' + \
+                              'customers=' + str(node.customers) + ', ' + \
+                              'peers=' + str(node.peers) + ', ' + \
+                              'providers=' + str(node.providers) + ')\n'
+        return representation
