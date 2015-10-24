@@ -1,5 +1,5 @@
 from collections import deque
-from attributes import ASTypeAttr
+from attributes import ASTypeAttr, HopCountAttr
 from link import Link
 from node import Node
 from relationship import Relationship
@@ -41,10 +41,14 @@ class Network(object):
         # add the edge to the tail node
         self._nodes[tail_netid].add_link(self._nodes[head_netid], relationship)
 
-    def algorithm(self, dest_id):
+    def algorithm(self, dest_id, hop=False):
 
-        for node in self._nodes:
-            node.path_type = ASTypeAttr()
+        if hop:
+            for node in self._nodes:
+                node.path_type = HopCountAttr()
+        else:
+            for node in self._nodes:
+                node.path_type = ASTypeAttr()
 
         # create aux list of edges
         customer_links = deque()
