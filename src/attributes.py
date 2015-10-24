@@ -14,6 +14,9 @@ class ASTypeAttr(object):
     def value(self, other):
         self._relationship = other
 
+    def operation(self, link_type):
+        return ASTypeAttr(Relationship.operation_table[link_type][self._relationship])
+
     def __eq__(self, other):
         """
         :type other: ASTypeAttr
@@ -38,10 +41,22 @@ class ASTypeAttr(object):
         """
         return self._relationship > other._relationship
 
+    def __repr__(self):
+        if self._relationship == Relationship.SELF:
+            return 'O'
+        elif self._relationship == Relationship.C:
+            return 'C'
+        elif self._relationship == Relationship.R:
+            return 'R'
+        elif self._relationship == Relationship.P:
+            return 'P'
+        else:
+            return 'NON'
+
 
 class HopCountAttr(object):
 
-    def __init__(self, relationship=Relationship.NON, hop_count=0):
+    def __init__(self, relationship=Relationship.NON, hop_count=-1):
         self._relationship = relationship
         self._hop_count = hop_count
 
@@ -53,6 +68,9 @@ class HopCountAttr(object):
     def value(self, relationship, hop_count):
         self._relationship = relationship
         self._hop_count = hop_count
+
+    def operation(self, link_type):
+        return HopCountAttr(Relationship.operation_table[link_type][self._relationship], self._hop_count + 1)
 
     def __eq__(self, other):
         """
@@ -85,3 +103,15 @@ class HopCountAttr(object):
             comparison = self._hop_count - other._hop_count
 
         return comparison > 0
+
+    def __repr__(self):
+        if self._relationship == Relationship.SELF:
+            return 'O, ' + str(self._hop_count)
+        elif self._relationship == Relationship.C:
+            return 'C, ' + str(self._hop_count)
+        elif self._relationship == Relationship.R:
+            return 'R, ' + str(self._hop_count)
+        elif self._relationship == Relationship.P:
+            return 'P, ' + str(self._hop_count)
+        else:
+            return 'NON, ' + str(self._hop_count)
