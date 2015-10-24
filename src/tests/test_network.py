@@ -1,6 +1,18 @@
 from network import Network
 from relationship import Relationship
 
+
+def test_algorithms(network):
+    for node in network._nodes:
+        print("ASType Destination=%d" % node.id)
+        network.algorithm_astype(node.id)
+        print(network)
+
+    for node in network._nodes:
+        print("HopCount Destination=%d" % node.id)
+        network.algorithm_hop_count(node.id)
+        print(network)
+
 network = Network()
 
 network.add_link(1, 2, Relationship.R)
@@ -17,44 +29,10 @@ network.add_link(5, 2, Relationship.P)
 print("Original")
 print(network)
 
-print("ASType Destination=5")
-network.algorithm_astype(5)
-print(network)
+print("TEST 1")
+test_algorithms(network)
 
-print("ASType Destination=4")
-network.algorithm_astype(4)
-print(network)
-
-print("ASType Destination=3")
-network.algorithm_astype(3)
-print(network)
-
-print("ASType Destination=2")
-network.algorithm_astype(2)
-print(network)
-
-print("ASType Destination=1")
-network.algorithm_astype(1)
-print(network)
-
-print()
-
-print("HopCount Destination=5")
-network.algorithm_hop_count(5)
-print(network)
-
-print("HopCount Destination=4")
-network.algorithm_hop_count(4)
-print(network)
-
-print("HopCount Destination=3")
-network.algorithm_hop_count(3)
-print(network)
-
-print("HopCount Destination=2")
-network.algorithm_hop_count(2)
-print(network)
-
-print("HopCount Destination=1")
-network.algorithm_hop_count(1)
-print(network)
+print("TEST 2")
+network.add_link(8, 5, Relationship.C)
+network.add_link(5, 8, Relationship.P)
+test_algorithms(network)
