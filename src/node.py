@@ -1,3 +1,4 @@
+from attributes import ASTypeAttr
 from relationship import Relationship
 
 
@@ -9,7 +10,7 @@ class Node(object):
         self._customers = []
         self._peers = []
         self._providers = []
-        self.path_type = Relationship.NON
+        self.path_type = ASTypeAttr()
 
     @property
     def customers(self):

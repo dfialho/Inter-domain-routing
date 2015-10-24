@@ -1,4 +1,5 @@
 from collections import deque
+from attributes import ASTypeAttr
 from link import Link
 from node import Node
 from relationship import Relationship
@@ -43,7 +44,7 @@ class Network(object):
     def algorithm(self, dest_id):
 
         for node in self._nodes:
-            node.path_type = Relationship.NON
+            node.path_type = ASTypeAttr()
 
         # create aux list of edges
         customer_links = deque()
@@ -58,7 +59,7 @@ class Network(object):
             # processing the path type of the head node of the link
             node = link.head
 
-            path_type = Relationship.operation(link.type, link.tail.path_type)
+            path_type = link.tail.path_type.operation(link.type)
             if path_type < node.path_type:
                 node.path_type = path_type
 

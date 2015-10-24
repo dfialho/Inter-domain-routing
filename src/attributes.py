@@ -14,6 +14,9 @@ class ASTypeAttr(object):
     def value(self, other):
         self._relationship = other
 
+    def operation(self, link_type):
+        return ASTypeAttr(Relationship.operation_table[link_type][self._relationship])
+
     def __eq__(self, other):
         """
         :type other: ASTypeAttr
@@ -37,6 +40,18 @@ class ASTypeAttr(object):
         :type other: ASTypeAttr
         """
         return self._relationship > other._relationship
+
+    def __repr__(self):
+        if self._relationship == Relationship.SELF:
+            return 'O'
+        elif self._relationship == Relationship.C:
+            return 'C'
+        elif self._relationship == Relationship.R:
+            return 'R'
+        elif self._relationship == Relationship.P:
+            return 'P'
+        else:
+            return 'NON'
 
 
 class HopCountAttr(object):
