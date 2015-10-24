@@ -9,6 +9,7 @@ class Node(object):
         self._customers = []
         self._peers = []
         self._providers = []
+        self.path_type = Relationship.NON
 
     @property
     def customers(self):
