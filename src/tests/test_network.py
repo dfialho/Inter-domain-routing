@@ -17,3 +17,22 @@ network.add_link(5, 2, Relationship.P)
 print("Original")
 print(network)
 
+print("Destination=5")
+network.algorithm(5)
+print(network)
+
+print("Destination=4")
+network.algorithm(4)
+print(network)
+
+print("Destination=3")
+network.algorithm(3)
+print(network)
+
+print("Destination=2")
+network.algorithm(2)
+print(network)
+
+print("Destination=1")
+network.algorithm(1)
+print(network)
