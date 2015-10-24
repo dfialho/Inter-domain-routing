@@ -1,4 +1,7 @@
+from collections import deque
+from link import Link
 from node import Node
+from relationship import Relationship
 
 
 class Network(object):
@@ -37,6 +40,48 @@ class Network(object):
         # add the edge to the tail node
         self._nodes[tail_netid].add_link(self._nodes[head_netid], relationship)
 
+    def algorithm(self, dest_id):
+
+        for node in self._nodes:
+            node.path_type = Relationship.NON
+
+        # create aux list of edges
+        customer_links = deque()
+        peer_links = deque()
+        provider_links = deque()
+
+        only_customers = False
+        dest_node = self._nodes[self._ids[dest_id]]
+        link = Link(dest_node, dest_node, Relationship.SELF)
+
+        while link:
+            # processing the path type of the head node of the link
+            node = link.head
+
+            path_type = Relationship.operation(link.type, link.tail.path_type)
+            if path_type < node.path_type:
+                node.path_type = path_type
+
+                for customer in node.customers:
+                    # the type of link is equal to the relationship between the head node and the tail
+                    customer_links.append(Link(node, customer, Relationship.C))
+
+                if not only_customers:
+                    for peer in node.peers:
+                        peer_links.append(Link(node, peer, Relationship.R))
+                    for provider in node.providers:
+                        provider_links.append(Link(node, provider, Relationship.P))
+
+            if provider_links:
+                link = provider_links.popleft()
+            elif peer_links:
+                link = peer_links.popleft()
+            elif customer_links:
+                link = customer_links.popleft()
+                only_customers = True
+            else:
+                link = None
+
     def __repr__(self):
         representation = 'Network:\n'
         for node in self._nodes:
@@ -44,5 +89,6 @@ class Network(object):
                               'id=' + str(node.id) + ', ' + \
                               'customers=' + str(node.customers) + ', ' + \
                               'peers=' + str(node.peers) + ', ' + \
-                              'providers=' + str(node.providers) + ')\n'
+                              'providers=' + str(node.providers) + ', ' + \
+                              'path_type=' + str(node.path_type) + ')\n'
         return representation
