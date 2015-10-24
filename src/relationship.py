@@ -14,6 +14,3 @@ class Relationship:
         [NON, NON, NON, NON, NON]
     ]
 
-    @staticmethod
-    def operation(link_type, path_type):
-        return Relationship.operation_table[link_type][path_type]
