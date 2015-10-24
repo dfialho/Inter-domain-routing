@@ -10,7 +10,7 @@ class Node(object):
         self._customers = []
         self._peers = []
         self._providers = []
-        self.path_type = ASTypeAttr()
+        self.path_type = None
 
     @property
     def customers(self):
