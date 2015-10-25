@@ -32,7 +32,11 @@ print(network)
 print("TEST 1")
 test_algorithms(network)
 
+print(network.count_pathtypes())
+
 print("TEST 2")
 network.add_link(8, 5, Relationship.C)
 network.add_link(5, 8, Relationship.P)
 test_algorithms(network)
+
+print(network.count_pathtypes())
