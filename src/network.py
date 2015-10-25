@@ -2,7 +2,8 @@ from collections import deque
 from attributes import ASTypeAttr, HopCountAttr
 from link import Link
 from node import Node
-from relationship import Relationship
+from relationship import Relationship, PathCounter
+from collections import defaultdict
 
 
 class Network(object):
@@ -53,7 +54,7 @@ class Network(object):
 
         self._algorithm(dest_id)
 
-    def _algorithm(self, dest_id):
+    def _algorithm(self, dest_id, path_counter=None, hop_count_counter=None):
 
         # create aux list of edges
         customer_links = deque()
@@ -70,7 +71,16 @@ class Network(object):
 
             path_type = link.tail.path_type.operation(link.type)
             if path_type < node.path_type:
+                if path_counter:
+                    path_counter.decrement(node.path_type.value[0])
+                    if node.path_type.value[1] > 0:
+                        hop_count_counter[node.path_type.value[1]] -= 1
+
                 node.path_type = path_type
+
+                if path_counter:
+                    path_counter.increment(node.path_type.value[0])
+                    hop_count_counter[node.path_type.value[1]] += 1
 
                 for customer in node.customers:
                     # the type of link is equal to the relationship between the head node and the tail
@@ -91,6 +101,19 @@ class Network(object):
                 only_customers = True
             else:
                 link = None
+
+    def count_path(self):
+        path_counter = PathCounter()
+        hop_count_counter = defaultdict(int)
+
+        for dest_node in self._nodes:
+            for node in self._nodes:
+                node.path_type = HopCountAttr()
+                path_counter.increment(Relationship.NON)
+
+            self._algorithm(dest_node.id, path_counter, hop_count_counter)
+
+        return path_counter, hop_count_counter
 
     def __repr__(self):
         representation = 'Network:\n'
