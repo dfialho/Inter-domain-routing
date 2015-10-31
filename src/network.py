@@ -13,6 +13,16 @@ class Network(object):
         self._ids = {}
         self._netid_count = -1
 
+    @staticmethod
+    def from_file(path):
+        keymap = {'1': Relationship.P, '2': Relationship.R, '3': Relationship.C}
+        net = Network()
+        with open(path) as file:
+            for line in file:
+                words = line.split()
+                net.add_link(words[0], words[1], keymap[words[2]])
+        return net
+
     def _new_netid(self):
         self._netid_count += 1
         return self._netid_count
