@@ -40,7 +40,7 @@ class Network(object):
         # add the edge to the tail node
         self._nodes[tail_netid].add_link(self._nodes[head_netid], relationship)
 
-    def algorithm(self, dest_id):
+    def algorithm(self, dest_id): # find path types change name
 
         for node in self._nodes:
             node.path_type = Relationship.NON

@@ -11,6 +11,7 @@ class Node(object):
         self._providers = []
         self.path_type = Relationship.NON
 
+
     @property
     def customers(self):
         return self._customers
