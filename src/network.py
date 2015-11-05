@@ -18,7 +18,7 @@ class Network(object):
         with open(path) as file:
             for line in file:
                 words = line.split()
-                net.add_link(words[0], words[1], keymap[words[2]])
+                net.add_link(int(words[0]), int(words[1]), keymap[words[2]])
         return net
 
     def _new_netid(self):
@@ -50,7 +50,7 @@ class Network(object):
         # add the edge to the tail node
         self._nodes[tail_netid].add_link(self._nodes[head_netid], relationship)
 
-    def algorithm(self, dest_id): # find path types change name
+    def find_routes(self, dest_id):
 
         for node in self._nodes:
             node.path_type = Relationship.NON
@@ -91,6 +91,8 @@ class Network(object):
                 only_customers = True
             else:
                 link = None
+
+    #def get_hops(self, dest_id):
 
     def __repr__(self):
         representation = 'Network:\n'
