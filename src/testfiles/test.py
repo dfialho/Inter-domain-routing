@@ -1,7 +1,13 @@
 from network import Network
+import time
 
-net = Network.from_file("testfiles/hello.txt")
-net.find_routes(1)
+t = time.time()
+net = Network.from_file("testfiles/BIGDATA.txt")
+net.find_routes(3)
+hops = net.get_hops(3)
+elapsed = time.time() - t
 
-print(net)
-print()
+print(elapsed)
+
+for key in hops.keys():
+    print(str(key) + ' ' + str(hops[key]))
