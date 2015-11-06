@@ -13,12 +13,12 @@ class Network(object):
 
     @staticmethod
     def from_file(path):
-        keymap = {'1': Relationship.P, '2': Relationship.R, '3': Relationship.C}
+        keymap = {'3': Relationship.P, '2': Relationship.R, '1': Relationship.C}
         net = Network()
         with open(path) as file:
             for line in file:
                 words = line.split()
-                net.add_link(words[0], words[1], keymap[words[2]])
+                net.add_link(int(words[0]), int(words[1]), keymap[words[2]])
         return net
 
     def _new_netid(self):
@@ -50,7 +50,7 @@ class Network(object):
         # add the edge to the tail node
         self._nodes[tail_netid].add_link(self._nodes[head_netid], relationship)
 
-    def algorithm(self, dest_id): # find path types change name
+    def find_routes(self, dest_id):
 
         for node in self._nodes:
             node.path_type = Relationship.NON
@@ -91,6 +91,53 @@ class Network(object):
                 only_customers = True
             else:
                 link = None
+
+    def get_hops(self, dest_id):
+        min_hops = {}
+        tovisit = deque()
+
+        # Set all the distances to infinity
+        for node in self._nodes:
+            min_hops[node._netid] = 100000000 # it should be infinity here
+
+        # Map the node to our id strategy
+        node = self._nodes[self._ids[dest_id]]
+
+        # Set the distance to self equal to zero
+        min_hops[node._netid] = 0
+
+        # Add the edge to self to the queue
+        link = Link(node, node, Relationship.C)
+
+        while link:
+
+            node = link.head
+
+            # Check if the current estimate is better than the estimated last
+            if min_hops[node._netid] > 1 + min_hops[link.tail._netid] or link.head._netid == link.tail._netid:
+
+                # Update estimate
+                if link.head._netid != link.tail._netid:
+                    min_hops[node._netid] = 1 + min_hops[link.tail._netid]
+
+                # Add all the links going from the destination node to the queue
+                # Also add the links to visited links set
+                for customer in node.customers:
+                    if customer._netid != link.tail._netid:
+                        tovisit.append(Link(node, customer, Relationship.C))
+
+                if node.path_type == 1 or node.path_type == 0:
+                    for peer in node.peers:
+                        if peer._netid != link.tail._netid:
+                            tovisit.append(Link(node, peer, Relationship.R))
+                    for provider in node.providers:
+                        if provider._netid != link.tail._netid:
+                            tovisit.append(Link(node, provider, Relationship.P))
+
+            if tovisit:
+                link = tovisit.popleft()
+            else:
+                return min_hops
 
     def __repr__(self):
         representation = 'Network:\n'
