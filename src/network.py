@@ -98,7 +98,7 @@ class Network(object):
 
         # Set all the distances to infinity
         for node in self._nodes:
-            min_hops[node._netid] = 100000000 # it should be infinity here
+            min_hops[node._netid] = 4294967295 # it should be infinity here
 
         # Map the node to our id strategy
         node = self._nodes[self._ids[dest_id]]
