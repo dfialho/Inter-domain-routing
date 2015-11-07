@@ -1,8 +1,8 @@
 #include <fstream>
-#include <unistd.h>
 #include <iostream>
 
 #include "Network.h"
+#include "LinkPriorityQueue.h"
 
 using namespace std;
 
@@ -67,4 +67,49 @@ void Network::print() const {
             cout << "\tP-" << provider->getId() << endl;
         }
     }
+}
+
+Network::PathTypeList Network::findPathTypes(Node::ID destNodeId) {
+
+    // get the destination node network id
+    Node::ID destNodeNetId = idGenerator.getNetworkId(destNodeId);
+
+    // initialize all nodes with path type = None
+    PathTypeList pathTypes(nodes.size(), PathType::None);
+
+    LinkPriorityQueue linkQueue;
+    pathTypes[destNodeNetId] = PathType::Customer;
+
+    linkQueue.pushCustomers(nodes[destNodeNetId].get());
+    linkQueue.pushPeers(nodes[destNodeNetId].get());
+    linkQueue.pushProviders(nodes[destNodeNetId].get());
+
+    while(!linkQueue.empty()) {
+        Link link = linkQueue.pop();
+        Node* node = link.getHead();
+
+        PathType newPathType = operation(link.getType(), pathTypes[link.getTail()->getNetid()]);
+        if(newPathType < pathTypes[node->getNetid()]) {
+            pathTypes[node->getNetid()] = newPathType;
+
+            linkQueue.pushCustomers(node);
+
+            if(newPathType == PathType::Customer) {
+                linkQueue.pushPeers(node);
+                linkQueue.pushProviders(node);
+            }
+        }
+    }
+
+    return pathTypes;
+}
+
+Network::PathType Network::operation(Link::Type linkType, Network::PathType pathType) {
+    static PathType table[3][5] = {
+            {PathType::Provider, PathType::Provider, PathType::Provider, PathType::Provider, PathType::None},
+            {PathType::Peer,     PathType::Peer,     PathType::None,     PathType::None,     PathType::None},
+            {PathType::Customer, PathType::Customer, PathType::None,     PathType::None,     PathType::None}
+    };
+
+    return table[linkType][pathType];
 }
