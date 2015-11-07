@@ -3,16 +3,16 @@
 
 #include "Node.h"
 #include "NetworkIdGenerator.h"
+#include "Link.h"
 
 class Network {
 
 public:
-    enum LinkType { Customer = 0, Peer = 1, Provider = 2 };
 
     Network() {}
     Network(const std::string& filename);
 
-    void addLink(Node::ID tailId, Node::ID headId, LinkType type);
+    void addLink(Node::ID tailId, Node::ID headId, Link::Type type);
     void print() const;
 
 private:

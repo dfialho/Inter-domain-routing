@@ -16,11 +16,11 @@ Network::Network(const std::string &filename) {
 
     uint16_t tailId, headId, relationship;
     while(inFile >> tailId >> headId >> relationship) {
-        addLink(tailId, headId, LinkType(relationship - 1));
+        addLink(tailId, headId, Link::Type (relationship - 1));
     }
 }
 
-void Network::addLink(Node::ID tailId, Node::ID headId, LinkType type) {
+void Network::addLink(Node::ID tailId, Node::ID headId, Link::Type  type) {
 
     // get the network ids for both the nodes of the link
     Node::ID headNetId = idGenerator.getNetworkId(headId);
@@ -36,15 +36,15 @@ void Network::addLink(Node::ID tailId, Node::ID headId, LinkType type) {
     }
 
     switch (type) {
-        case LinkType::Customer:
+        case Link::Type ::Customer:
             // add  customer link from the tail node to the head node
             nodes[tailNetId]->addCustomer(nodes[headNetId].get());
             break;
-        case LinkType::Peer:
+        case Link::Type ::Peer:
             // add  peer link from the tail node to the head node
             nodes[tailNetId]->addPeer(nodes[headNetId].get());
             break;
-        case LinkType::Provider:
+        case Link::Type ::Provider:
             // add  peer provider from the tail node to the head node
             nodes[tailNetId]->addProvider(nodes[headNetId].get());
             break;
