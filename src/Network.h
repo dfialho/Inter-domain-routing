@@ -10,6 +10,8 @@ class Network {
 public:
     enum PathType { Customer = 0, Peer = 1, Provider = 2, None = 3 };
     typedef std::vector<PathType> PathTypeList;
+    typedef std::unique_ptr<Node> NodeHolder;
+    typedef std::vector<NodeHolder> NodeHolderList;
 
     Network() {}
     Network(const std::string& filename);
@@ -19,10 +21,10 @@ public:
 
     PathTypeList findPathTypes(Node::ID destNodeId);
 
-private:
-    typedef std::unique_ptr<Node> NodeHolder;
-    typedef std::vector<std::unique_ptr<Node>> NodeHolderList;
+    inline const NodeHolderList& getNodes() const { return nodes; }
+    inline unsigned long nodeCount() { return nodes.size(); }
 
+private:
     NodeHolderList nodes;           // all the nodes in the network
     NetworkIdGenerator idGenerator; // generates and holds the nodes ids
 
