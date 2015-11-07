@@ -21,6 +21,10 @@ public:
     inline const NodeList &getPeers() const { return peers; }
     inline const NodeList &getProviders() const { return providers; }
 
+    inline void addCustomer(Node* node) { customers.push_back(node); }
+    inline void addPeer(Node* node)  { peers.push_back(node); }
+    inline void addProvider(Node* node)  { providers.push_back(node); }
+
 private:
     ID id;      // actual id of the node
     ID netid;   // id of the node inside the network
