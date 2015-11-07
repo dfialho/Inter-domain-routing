@@ -21,6 +21,7 @@ public:
 
     PathTypeList findPathTypes(Node::ID destNodeId);
 
+    inline const NodeHolder& getNode(Node::ID id) { return nodes[idGenerator.getNetworkId(id)]; }
     inline const NodeHolderList& getNodes() const { return nodes; }
     inline unsigned long nodeCount() { return nodes.size(); }
 
