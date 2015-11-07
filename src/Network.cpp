@@ -16,7 +16,7 @@ Network::Network(const std::string &filename) {
 
     uint16_t tailId, headId, relationship;
     while(inFile >> tailId >> headId >> relationship) {
-        addLink(tailId, headId, LinkType(relationship));
+        addLink(tailId, headId, LinkType(relationship - 1));
     }
 }
 
