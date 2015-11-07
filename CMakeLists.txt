@@ -4,6 +4,6 @@ project(Inter_domain_routing)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
 set(SOURCE_FILES
-    src/main.cpp)
+        src/Node.h)
 
-add_executable(Inter_domain_routing ${SOURCE_FILES})
+add_executable(Inter_domain_routing ${SOURCE_FILES} src/main.cpp)
