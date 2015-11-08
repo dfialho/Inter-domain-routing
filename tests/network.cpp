@@ -6,7 +6,7 @@ using namespace std;
 
 int main() {
 
-    Network network("/home/david/Development/IST/ADRC/Inter-domain-routing/tests/enunciado_ext1.txt");
+    Network network("/home/david/Development/IST/ADRC/Inter-domain-routing/tests/small.txt");
 
     cout << "Initial Network" << endl;
     network.print();
@@ -41,5 +41,13 @@ int main() {
     cout << "Hop Counts" << endl;
     for(auto i = 0; i < network.nodeCount(); i++) {
         cout << nodes[i]->getId() << ": " << hopCounts[i] << endl;
+    }
+
+    Network::StatsTable table = network.stats();
+
+    cout << "Stats" << endl;
+    cout << "Hop\tC\tR\tP\tNone" << endl;
+    for(auto i = 0; i < table.size(); i++) {
+        cout << i << '\t' << table[i][0] << '\t' << table[i][1] << '\t' << table[i][2] << '\t' << table[i][3] << endl;
     }
 }
