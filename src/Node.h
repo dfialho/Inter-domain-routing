@@ -12,7 +12,7 @@ public:
     typedef uint16_t ID;
     typedef std::vector<Node*> NodeList;
 
-    Node(ID id, ID netid) : id(id) {}
+    Node(ID id, ID netid) : id(id), netid(netid) {}
 
     inline ID getId() const { return id; }
     inline ID getNetid() const { return netid; }
