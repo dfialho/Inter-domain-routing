@@ -6,7 +6,7 @@ using namespace std;
 
 int main() {
 
-    Network network("/home/david/Development/IST/ADRC/Inter-domain-routing/tests/small.txt");
+    Network network("/home/david/Development/IST/ADRC/Inter-domain-routing/tests/NewLargeNetwork.txt");
 
     cout << "Initial Network" << endl;
     network.print();
@@ -43,7 +43,10 @@ int main() {
         cout << nodes[i]->getId() << ": " << hopCounts[i] << endl;
     }
 
+    begin = clock();
     Network::StatsTable table = network.stats();
+    end = clock();
+    cout << double(end - begin) / CLOCKS_PER_SEC << endl;
 
     cout << "Stats" << endl;
     cout << "Hop\tC\tR\tP\tNone" << endl;
