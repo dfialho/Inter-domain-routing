@@ -74,9 +74,39 @@ Network::PathTypeList Network::findPathTypes(Node::ID destNodeId) {
 
     // get the destination node network id
     Node::ID destNodeNetId = idGenerator.getNetworkId(destNodeId);
-
     // initialize all nodes with path type = None
     PathTypeList pathTypes(nodes.size(), PathType::None);
+
+    findPathTypes(destNodeNetId, pathTypes);
+    return pathTypes;
+}
+
+Network::HopCountList Network::findPathHopCounts(Node::ID destNodeId) {
+
+    // get the destination node network id
+    Node::ID destNodeNetId = idGenerator.getNetworkId(destNodeId);
+
+    PathTypeList pathTypes = findPathTypes(destNodeId);
+    // initialize all nodes with path type = None
+    HopCountList hopCounts(nodes.size(), UINT_MAX);
+
+    findPathHopCounts(destNodeNetId, pathTypes, hopCounts);
+    return hopCounts;
+}
+
+///// Begin Private /////
+
+Network::PathType Network::operation(Link::Type linkType, Network::PathType pathType) {
+    static PathType table[3][5] = {
+            {PathType::Provider, PathType::Provider, PathType::Provider, PathType::Provider, PathType::None},
+            {PathType::Peer,     PathType::Peer,     PathType::None,     PathType::None,     PathType::None},
+            {PathType::Customer, PathType::Customer, PathType::None,     PathType::None,     PathType::None}
+    };
+
+    return table[linkType][pathType];
+}
+
+void Network::findPathTypes(Node::ID destNodeNetId, Network::PathTypeList &pathTypes) {
 
     LinkPriorityQueue linkQueue;
     pathTypes[destNodeNetId] = PathType::Customer;
@@ -101,18 +131,10 @@ Network::PathTypeList Network::findPathTypes(Node::ID destNodeId) {
             }
         }
     }
-
-    return pathTypes;
 }
 
-Network::HopCountList Network::findPathHopCounts(Node::ID destNodeId) {
-
-    PathTypeList pathTypes = findPathTypes(destNodeId);
-
-    // get the destination node network id
-    Node::ID destNodeNetId = idGenerator.getNetworkId(destNodeId);
-    // initialize all nodes with path type = None
-    HopCountList hopCounts(nodes.size(), UINT_MAX);
+void Network::findPathHopCounts(Node::ID destNodeNetId, const PathTypeList& pathTypes,
+                                Network::HopCountList &hopCounts) {
 
     hopCounts[destNodeNetId] = 0;
     std::queue<Link> linkQueue;
@@ -153,16 +175,4 @@ Network::HopCountList Network::findPathHopCounts(Node::ID destNodeId) {
             }
         }
     }
-
-    return hopCounts;
-}
-
-Network::PathType Network::operation(Link::Type linkType, Network::PathType pathType) {
-    static PathType table[3][5] = {
-            {PathType::Provider, PathType::Provider, PathType::Provider, PathType::Provider, PathType::None},
-            {PathType::Peer,     PathType::Peer,     PathType::None,     PathType::None,     PathType::None},
-            {PathType::Customer, PathType::Customer, PathType::None,     PathType::None,     PathType::None}
-    };
-
-    return table[linkType][pathType];
 }

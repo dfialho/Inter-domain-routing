@@ -32,6 +32,10 @@ private:
     NetworkIdGenerator idGenerator; // generates and holds the nodes ids
 
     PathType operation(Link::Type linkType, Network::PathType pathType);
+
+    void findPathTypes(Node::ID destNodeNetId, PathTypeList& pathTypes);
+    void findPathHopCounts(Node::ID destNodeNetId, const PathTypeList& pathTypes, HopCountList& hopCounts);
+
 };
 
 
