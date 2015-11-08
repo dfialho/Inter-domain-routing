@@ -98,7 +98,7 @@ class Network(object):
 
         # Set all the distances to infinity
         for node in self._nodes:
-            min_hops[node._netid] = 4294967295 # it should be infinity here
+            min_hops[node._netid] = 4294967295
 
         # Map the node to our id strategy
         node = self._nodes[self._ids[dest_id]]
@@ -138,6 +138,21 @@ class Network(object):
                 link = tovisit.popleft()
             else:
                 return min_hops
+
+    def statistics_connections(self):
+        r = {0: 0, 1: 0, 2: 0, 3: 0, 4: 0}
+        for node in self._nodes:
+            aux = node.path_type
+            r[aux] += 1
+        return r
+
+    def statistics_hops(self, table):
+        hop_max = max(table.values())
+        stat = [0 for x in range(hop_max + 1)]
+        for id in table.keys():
+            stat[table[id]] += 1
+        return stat
+
 
     def __repr__(self):
         representation = 'Network:\n'
