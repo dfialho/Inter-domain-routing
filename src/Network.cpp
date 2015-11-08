@@ -4,6 +4,7 @@
 
 #include "Network.h"
 #include "LinkPriorityQueue.h"
+#include "StatsTable.h"
 
 using namespace std;
 
@@ -94,9 +95,7 @@ Network::HopCountList Network::findPathHopCounts(Node::ID destNodeId) {
     return hopCounts;
 }
 
-Network::StatsTable Network::stats() {
-    StatsTable table(1, {0});
-    unsigned maxHopCount = 0;
+void Network::stats(StatsTable &statsTable) {
 
     // initialize all nodes with path type = None
     PathTypeList pathTypes(nodes.size(), PathType::None);
@@ -117,20 +116,13 @@ Network::StatsTable Network::stats() {
                 continue;
             }
 
-            if(hopCount > maxHopCount) {
-                maxHopCount = hopCount;
-                // increase the size of the vector
-                table.resize(maxHopCount + 1, {0});
-            }
+            statsTable.add(hopCount, pathTypes[i]);
 
-            table[hopCount][pathTypes[i]]++;
         }
 
         fill(pathTypes.begin(), pathTypes.end(), PathType::None);
         fill(hopCounts.begin(), hopCounts.end(), UINT_MAX);
     }
-
-    return table;
 }
 
 ///// Begin Private /////

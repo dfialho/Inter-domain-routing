@@ -5,6 +5,8 @@
 #include "NetworkIdGenerator.h"
 #include "Link.h"
 
+class StatsTable;
+
 class Network {
 
 public:
@@ -13,7 +15,6 @@ public:
     typedef std::vector<unsigned> HopCountList;
     typedef std::unique_ptr<Node> NodeHolder;
     typedef std::vector<NodeHolder> NodeHolderList;
-    typedef std::vector<std::array<unsigned, 4>> StatsTable;
 
     Network() {}
     Network(const std::string& filename);
@@ -23,7 +24,7 @@ public:
 
     PathTypeList findPathTypes(Node::ID destNodeId);
     HopCountList findPathHopCounts(Node::ID destNodeId);
-    StatsTable stats();
+    void stats(StatsTable& statsTable);
 
     inline const NodeHolder& getNode(Node::ID id) { return nodes[idGenerator.getNetworkId(id)]; }
     inline const NodeHolderList& getNodes() const { return nodes; }
