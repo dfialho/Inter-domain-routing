@@ -1,5 +1,6 @@
 #include <fstream>
 #include <iostream>
+#include <climits>
 
 #include "Network.h"
 #include "LinkPriorityQueue.h"
@@ -102,6 +103,58 @@ Network::PathTypeList Network::findPathTypes(Node::ID destNodeId) {
     }
 
     return pathTypes;
+}
+
+Network::HopCountList Network::findPathHopCounts(Node::ID destNodeId) {
+
+    PathTypeList pathTypes = findPathTypes(destNodeId);
+
+    // get the destination node network id
+    Node::ID destNodeNetId = idGenerator.getNetworkId(destNodeId);
+    // initialize all nodes with path type = None
+    HopCountList hopCounts(nodes.size(), UINT_MAX);
+
+    hopCounts[destNodeNetId] = 0;
+    std::queue<Link> linkQueue;
+
+    for(auto customer : nodes[destNodeNetId]->getCustomers()) {
+        linkQueue.push(Link(nodes[destNodeNetId].get(), customer, Link::Type::Customer));
+    }
+    for(auto peer : nodes[destNodeNetId]->getPeers()) {
+        linkQueue.push(Link(nodes[destNodeNetId].get(), peer, Link::Type::Peer));
+    }
+    for(auto provider : nodes[destNodeNetId]->getProviders()) {
+        linkQueue.push(Link(nodes[destNodeNetId].get(), provider, Link::Type::Provider));
+    }
+
+    while(!linkQueue.empty()) {
+        Link link = linkQueue.front();
+        linkQueue.pop();
+        Node* node = link.getHead();
+
+        unsigned newHopCount = hopCounts[link.getTail()->getNetid()] + 1;
+        if(newHopCount < hopCounts[node->getNetid()]) {
+            hopCounts[node->getNetid()] = newHopCount;
+
+            for(auto customer : node->getCustomers()) {
+                if(customer != link.getTail())
+                    linkQueue.push(Link(node, customer, Link::Type::Customer));
+            }
+
+            if(pathTypes[node->getNetid()] == PathType::Customer) {
+                for(auto peer : node->getPeers()) {
+                    if(peer != link.getTail())
+                        linkQueue.push(Link(node, peer, Link::Type::Peer));
+                }
+                for(auto provider : node->getProviders()) {
+                    if(provider != link.getTail())
+                        linkQueue.push(Link(node, provider, Link::Type::Provider));
+                }
+            }
+        }
+    }
+
+    return hopCounts;
 }
 
 Network::PathType Network::operation(Link::Type linkType, Network::PathType pathType) {
