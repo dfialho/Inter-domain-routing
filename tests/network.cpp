@@ -12,12 +12,16 @@ int main() {
     network.print();
     cout << endl;
 
-    clock_t begin = clock();
+    clock_t begin, end;
+
+    begin = clock();
     Network::PathTypeList pathTypes = network.findPathTypes(5);
-    clock_t end = clock();
+    end = clock();
     cout << double(end - begin) / CLOCKS_PER_SEC << endl;
 
     const Network::NodeHolderList& nodes = network.getNodes();
+
+    cout << "PathTypes" << endl;
     for(auto i = 0; i < network.nodeCount(); i++) {
         cout << nodes[i]->getId() << ": " << pathTypes[i] << endl;
     }
@@ -28,4 +32,14 @@ int main() {
     }
     end = clock();
     cout << double(end - begin) / CLOCKS_PER_SEC << endl;
+
+    begin = clock();
+    Network::HopCountList hopCounts = network.findPathHopCounts(5);
+    end = clock();
+    cout << double(end - begin) / CLOCKS_PER_SEC << endl;
+
+    cout << "Hop Counts" << endl;
+    for(auto i = 0; i < network.nodeCount(); i++) {
+        cout << nodes[i]->getId() << ": " << hopCounts[i] << endl;
+    }
 }

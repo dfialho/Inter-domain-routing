@@ -10,6 +10,7 @@ class Network {
 public:
     enum PathType { Customer = 0, Peer = 1, Provider = 2, None = 3 };
     typedef std::vector<PathType> PathTypeList;
+    typedef std::vector<unsigned> HopCountList;
     typedef std::unique_ptr<Node> NodeHolder;
     typedef std::vector<NodeHolder> NodeHolderList;
 
@@ -20,6 +21,7 @@ public:
     void print() const;
 
     PathTypeList findPathTypes(Node::ID destNodeId);
+    HopCountList findPathHopCounts(Node::ID destNodeId);
 
     inline const NodeHolder& getNode(Node::ID id) { return nodes[idGenerator.getNetworkId(id)]; }
     inline const NodeHolderList& getNodes() const { return nodes; }
