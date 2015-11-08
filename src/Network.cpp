@@ -94,6 +94,45 @@ Network::HopCountList Network::findPathHopCounts(Node::ID destNodeId) {
     return hopCounts;
 }
 
+Network::StatsTable Network::stats() {
+    StatsTable table(1, {0});
+    unsigned maxHopCount = 0;
+
+    // initialize all nodes with path type = None
+    PathTypeList pathTypes(nodes.size(), PathType::None);
+    // initialize all nodes with path type = None
+    HopCountList hopCounts(nodes.size(), UINT_MAX);
+
+    for(auto& node : nodes) {
+
+        findPathTypes(node->getNetid(), pathTypes);
+        findPathHopCounts(node->getNetid(), pathTypes, hopCounts);
+
+        for(auto i = 0; i < nodeCount(); i++) {
+
+            unsigned hopCount = hopCounts[i];
+
+            if(hopCount == UINT_MAX) {
+                // ignore None paths for now
+                continue;
+            }
+
+            if(hopCount > maxHopCount) {
+                maxHopCount = hopCount;
+                // increase the size of the vector
+                table.resize(maxHopCount + 1, {0});
+            }
+
+            table[hopCount][pathTypes[i]]++;
+        }
+
+        fill(pathTypes.begin(), pathTypes.end(), PathType::None);
+        fill(hopCounts.begin(), hopCounts.end(), UINT_MAX);
+    }
+
+    return table;
+}
+
 ///// Begin Private /////
 
 Network::PathType Network::operation(Link::Type linkType, Network::PathType pathType) {
