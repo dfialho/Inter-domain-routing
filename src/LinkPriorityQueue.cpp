@@ -45,7 +45,7 @@ Link LinkPriorityQueue::pop() {
         queueToPop = &customerQueue;
     }
 
-    Link& link = queueToPop->front();
+    Link link = queueToPop->front();
     queueToPop->pop();
     return link;
 }
