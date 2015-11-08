@@ -21,4 +21,11 @@ int main() {
     for(auto i = 0; i < network.nodeCount(); i++) {
         cout << nodes[i]->getId() << ": " << pathTypes[i] << endl;
     }
+
+    begin = clock();
+    for(auto& node : network.getNodes()) {
+        network.findPathTypes(node->getId());
+    }
+    end = clock();
+    cout << double(end - begin) / CLOCKS_PER_SEC << endl;
 }
