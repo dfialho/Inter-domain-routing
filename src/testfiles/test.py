@@ -11,3 +11,14 @@ print(elapsed)
 
 for key in hops.keys():
     print(str(key) + ' ' + str(hops[key]))
+
+print()
+all_paths = net.statistics_connections()
+for connection in all_paths.keys():
+    print(str(connection) + ' ' + str(all_paths[connection]))
+
+
+print()
+all_hops = net.statistics_hops(hops)
+for x in range(len(all_hops)):
+    print(str(x) + ' ' + str(all_hops[x]))
