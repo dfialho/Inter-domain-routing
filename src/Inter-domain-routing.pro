@@ -21,7 +21,10 @@ SOURCES += \
     backend/StatsTable.cpp \
     main.cpp \
 	frontend/qcustomplot.cpp \
-    frontend/statsdialog.cpp
+    frontend/statsdialog.cpp \
+    frontend/hopcountsplot.cpp \
+    frontend/pathtypesplot.cpp \
+    frontend/statsplot.cpp
 
 HEADERS  += \
 	backend/Link.h \
@@ -31,7 +34,10 @@ HEADERS  += \
     backend/Node.h \
     backend/StatsTable.h \
 	frontend/qcustomplot.h \
-    frontend/statsdialog.h
+    frontend/statsdialog.h \
+    frontend/hopcountsplot.h \
+    frontend/pathtypesplot.h \
+    frontend/statsplot.h
 
 FORMS    += \
     frontend/statsdialog.ui
