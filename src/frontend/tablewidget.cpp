@@ -1,13 +1,8 @@
 #include <QHeaderView>
 #include "tablewidget.h"
 
-TableWidget::TableWidget(QWidget* parent) :
-	QTableWidget(parent) {
-
-}
-
 TableWidget::TableWidget(int rowCount, int columnCount, QWidget *parent) :
-	TableWidget(parent) {
+	QTableWidget(parent) {
 
 	// set the columns and rows of the table
 	this->setColumnCount(columnCount);

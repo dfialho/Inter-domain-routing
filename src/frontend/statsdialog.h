@@ -4,6 +4,7 @@
 #include <QDialog>
 
 class StatsTable;
+class TableWidget;
 
 namespace Ui {
 class StatsDialog;
@@ -21,11 +22,12 @@ private slots:
 
 private:
 	Ui::StatsDialog *ui;
-
 	QStringList comboBoxItems;
 	QList<QWidget*> widgets;
 	const StatsTable* statsTable;
 	QWidget* currentWidget;
+
+	void setTable(TableWidget* tableWidget, const StatsTable& statsTable);
 
 };
 

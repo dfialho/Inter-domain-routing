@@ -4,6 +4,7 @@
 #include "hopcountsplot.h"
 #include "pathtypesplot.h"
 #include "statsdialog.h"
+#include "tablewidget.h"
 #include "ui_statsdialog.h"
 
 StatsDialog::StatsDialog(QWidget *parent) :
@@ -18,22 +19,20 @@ StatsDialog::StatsDialog(QWidget *parent) :
 	// connection for the combox to make the widget change when the user chooses what stat to see
 	connect(ui->comboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(onComboBoxCurrentIndexChanged(int)));
 
-	StatsTable table;
-	network.stats(table);
-	statsTable = &table;
+	StatsTable statsTable;
+	network.stats(statsTable);
 
 	// create the widgets to be interchanged according to the combo box index
 	PathTypesPlot* pathTypesPlot = new PathTypesPlot(this);
-	pathTypesPlot->setTable(statsTable);
+	pathTypesPlot->setTable(&statsTable);
 	HopCountsPlot* hopCountsPlot = new HopCountsPlot(this);
-	hopCountsPlot->setTable(statsTable);
-//	StatsTableWidget* tableWidget = new StatsTableWidget(this);
-//	tableWidget->setTable(statsTable);
-	QPushButton* tableWidget = new QPushButton(this);
+	hopCountsPlot->setTable(&statsTable);
+	TableWidget* tableWidget = new TableWidget(statsTable.getMaxHop(), 3, this);
+	setTable(tableWidget, statsTable);
 
 	this->widgets << tableWidget << pathTypesPlot << hopCountsPlot;
 
-	// hide all widgets - only thw current widget is supposed to be shown
+	// hide all widgets - only the current widget is supposed to be shown
 	for(auto widget : widgets) {
 		widget->hide();
 	}
@@ -60,4 +59,30 @@ void StatsDialog::onComboBoxCurrentIndexChanged(int index){
 
 	currentWidget = widgets[index];
 	currentWidget->show();
+}
+
+void StatsDialog::setTable(TableWidget* tableWidget, const StatsTable &statsTable) {
+
+	// setup header labels
+	QStringList horizontalLabels;
+	horizontalLabels << "Customer" << "Peer" << "Provider";
+	tableWidget->setHorizontalHeaderLabels(horizontalLabels);
+
+	for(unsigned i = 0; i < statsTable.getMaxHop() + 1; i++) {
+		// set vertical headr with the hop count
+		QTableWidgetItem* item = TableWidget::itemFactory(QString::number(i));
+		tableWidget->setVerticalHeaderItem(i, item);
+
+		// add count for the customer
+		item = TableWidget::itemFactory(QString::number(statsTable.getCount(i, Network::PathType::Customer)));
+		tableWidget->setItem(i, Network::PathType::Customer, item);
+
+		// add count for the peer
+		item = TableWidget::itemFactory(QString::number(statsTable.getCount(i, Network::PathType::Peer)));
+		tableWidget->setItem(i, Network::PathType::Peer, item);
+
+		// add count for the provider
+		item = TableWidget::itemFactory(QString::number(statsTable.getCount(i, Network::PathType::Provider)));
+		tableWidget->setItem(i, Network::PathType::Provider, item);
+	}
 }
