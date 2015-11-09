@@ -25,7 +25,8 @@ SOURCES += \
     frontend/hopcountsplot.cpp \
     frontend/pathtypesplot.cpp \
     frontend/statsplot.cpp \
-    frontend/tablewidget.cpp
+    frontend/tablewidget.cpp \
+    frontend/mainwindow.cpp
 
 HEADERS  += \
 	backend/Link.h \
@@ -39,7 +40,9 @@ HEADERS  += \
     frontend/hopcountsplot.h \
     frontend/pathtypesplot.h \
     frontend/statsplot.h \
-    frontend/tablewidget.h
+    frontend/tablewidget.h \
+    frontend/mainwindow.h
 
 FORMS    += \
-    frontend/statsdialog.ui
+    frontend/statsdialog.ui \
+    frontend/mainwindow.ui
