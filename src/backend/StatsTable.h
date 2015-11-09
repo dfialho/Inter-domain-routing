@@ -8,7 +8,7 @@ class StatsTable {
 
 public:
 
-    StatsTable() : maxHopCount(0), counts(1, {0}), hopsCounts(1, 0)  {
+	StatsTable() : counts(1, {0}), hopsCounts(1, 0), maxHopCount(0)  {
         pathTypeCount = {0};
     }
 

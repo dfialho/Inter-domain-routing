@@ -107,7 +107,7 @@ void Network::stats(StatsTable &statsTable) {
         findPathTypes(node->getNetid(), pathTypes);
         findPathHopCounts(node->getNetid(), pathTypes, hopCounts);
 
-        for(auto i = 0; i < nodeCount(); i++) {
+		for(unsigned i = 0; i < nodeCount(); i++) {
 
             unsigned hopCount = hopCounts[i];
 
