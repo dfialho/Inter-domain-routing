@@ -7,20 +7,12 @@
 #include "tablewidget.h"
 #include "ui_statsdialog.h"
 
-StatsDialog::StatsDialog(QWidget *parent) :
+StatsDialog::StatsDialog(const StatsTable& statsTable, QWidget *parent) :
 	QDialog(parent),
 	ui(new Ui::StatsDialog),
 	currentWidget(nullptr) {
 
 	ui->setupUi(this);
-
-	Network network("/home/david/Development/IST/ADRC/Inter-domain-routing/tests/enunciado_ext1.txt");
-
-	// connection for the combox to make the widget change when the user chooses what stat to see
-	connect(ui->comboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(onComboBoxCurrentIndexChanged(int)));
-
-	StatsTable statsTable;
-	network.stats(statsTable);
 
 	// create the widgets to be interchanged according to the combo box index
 	PathTypesPlot* pathTypesPlot = new PathTypesPlot(this);
@@ -37,16 +29,17 @@ StatsDialog::StatsDialog(QWidget *parent) :
 		widget->hide();
 	}
 
+	// connection for the combox to make the widget change when the user chooses what stat to see
+	connect(ui->comboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(onComboBoxCurrentIndexChanged(int)));
+
 	// setup combox box
 	comboBoxItems << "All" << "Path Types" << "Hop Counts";
 	ui->comboBox->addItems(comboBoxItems);
 }
 
-StatsDialog::~StatsDialog()
-{
+StatsDialog::~StatsDialog() {
 	delete ui;
 }
-
 
 void StatsDialog::onComboBoxCurrentIndexChanged(int index){
 	if(currentWidget == nullptr) {

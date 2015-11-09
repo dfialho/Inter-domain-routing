@@ -1,5 +1,7 @@
 #include <QMessageBox>
+#include "backend/StatsTable.h"
 #include "mainwindow.h"
+#include "statsdialog.h"
 #include "ui_mainwindow.h"
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -69,7 +71,12 @@ void MainWindow::onButtonStartClicked() {
 	} else if(ui->radioButtonPathPrices->isChecked()) {
 		QMessageBox::information(this, "Hop Counts", "Hop Counts", QMessageBox::Ok);
 	} else if(ui->radioButtonStats->isChecked()) {
-		QMessageBox::information(this, "Stats", "Stats", QMessageBox::Ok);
+		// compute sats
+		StatsTable statsTable;
+		this->network->stats(statsTable);
+
+		StatsDialog* dialog = new StatsDialog(statsTable, this);
+		dialog->show();
 	}
 
 	// renable the user input

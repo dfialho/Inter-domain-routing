@@ -14,7 +14,7 @@ class StatsDialog : public QDialog {
 	Q_OBJECT
 
 public:
-	explicit StatsDialog(QWidget *parent = 0);
+	explicit StatsDialog(const StatsTable& statsTable, QWidget *parent = 0);
 	~StatsDialog();
 
 private slots:
