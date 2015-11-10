@@ -1,12 +1,13 @@
 #include <iostream>
 #include "../src/Network.h"
+#include "../src/StatsTable.h"
 
 using namespace std;
 
 
 int main() {
 
-    Network network("/home/david/Development/IST/ADRC/Inter-domain-routing/tests/NewLargeNetwork.txt");
+    Network network("/home/david/Development/IST/ADRC/Inter-domain-routing/tests/small.txt");
 
     cout << "Initial Network" << endl;
     network.print();
@@ -44,13 +45,18 @@ int main() {
     }
 
     begin = clock();
-    Network::StatsTable table = network.stats();
+    StatsTable table;
+    network.stats(table);
     end = clock();
     cout << double(end - begin) / CLOCKS_PER_SEC << endl;
 
     cout << "Stats" << endl;
     cout << "Hop\tC\tR\tP\tNone" << endl;
-    for(auto i = 0; i < table.size(); i++) {
-        cout << i << '\t' << table[i][0] << '\t' << table[i][1] << '\t' << table[i][2] << '\t' << table[i][3] << endl;
+    for(unsigned i = 0; i < table.getMaxHop() + 1; i++) {
+        cout << i << '\t' <<
+                table.getCount(i, Network::PathType::Customer) << '\t' <<
+                table.getCount(i, Network::PathType::Peer) << '\t' <<
+                table.getCount(i, Network::PathType::Provider) << '\t' <<
+                endl;
     }
 }

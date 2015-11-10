@@ -8,7 +8,8 @@ set(SOURCE_FILES
         src/Network.cpp src/Network.h
         src/NetworkIdGenerator.cpp src/NetworkIdGenerator.h
         src/Link.h
-        src/LinkPriorityQueue.cpp src/LinkPriorityQueue.h)
+        src/LinkPriorityQueue.cpp src/LinkPriorityQueue.h
+        src/StatsTable.cpp src/StatsTable.h)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}")
 
