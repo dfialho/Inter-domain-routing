@@ -6,13 +6,13 @@
 #include "Link.h"
 #include "pathtypestable.h"
 #include "pathtype.h"
+#include "hopcountstable.h"
 
 class StatsTable;
 
 class Network {
 
 public:
-    typedef std::vector<unsigned> HopCountList;
     typedef std::unique_ptr<Node> NodeHolder;
     typedef std::vector<NodeHolder> NodeHolderList;
 
@@ -23,7 +23,7 @@ public:
     void print() const;
 
 	PathTypesTable findPathTypes(Node::ID destNodeId);
-    HopCountList findPathHopCounts(Node::ID destNodeId);
+	HopCountsTable findPathHopCounts(Node::ID destNodeId);
     void stats(StatsTable& statsTable);
 
     inline const NodeHolder& getNode(Node::ID id) { return nodes[idGenerator.getNetworkId(id)]; }
@@ -37,7 +37,7 @@ private:
 	PathType operation(Link::Type linkType, PathType pathType);
 
 	void findPathTypes(Node::ID destNodeNetId, PathTypesTable& pathTypes);
-	void findPathHopCounts(Node::ID destNodeNetId, const PathTypesTable& pathTypes, HopCountList& hopCounts);
+	void findPathHopCounts(Node::ID destNodeNetId, const PathTypesTable& pathTypes, HopCountsTable& hopCounts);
 
 };
 
