@@ -1,6 +1,7 @@
 #include <QMessageBox>
 #include "backend/StatsTable.h"
 #include "mainwindow.h"
+#include "pathtypesdialog.h"
 #include "statsdialog.h"
 #include "ui_mainwindow.h"
 
@@ -69,7 +70,10 @@ void MainWindow::onButtonStartClicked() {
 	if(ui->radioButtonHopCounts->isChecked()) {
 		QMessageBox::information(this, "Path Types", "Path Types", QMessageBox::Ok);
 	} else if(ui->radioButtonPathPrices->isChecked()) {
-		QMessageBox::information(this, "Hop Counts", "Hop Counts", QMessageBox::Ok);
+		PathTypesTable pathTypes = network->findPathTypes(ui->spinBox->value());
+		PathTypesDialog* dialog = new PathTypesDialog(pathTypes, this);
+		dialog->show();
+
 	} else if(ui->radioButtonStats->isChecked()) {
 		// compute sats
 		StatsTable statsTable;
