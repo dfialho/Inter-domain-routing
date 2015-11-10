@@ -22,11 +22,11 @@ public:
 	typedef std::vector<std::pair<Node::ID, PathType>> Table;
 	typedef Table::const_iterator const_iterator;
 	typedef Table::iterator iterator;
-	typedef Table::const_reference const_reference;
-	typedef Table::reference reference;
+	typedef const PathType& const_reference;
+	typedef PathType& reference;
 
-	reference operator[] (Node::ID nodeNetID) { return data[nodeNetID]; }
-	const_reference operator[] (Node::ID nodeNetID) const { return data[nodeNetID]; }
+	reference operator[] (Node::ID nodeNetID) { return data[nodeNetID].second; }
+	const_reference operator[] (Node::ID nodeNetID) const { return data[nodeNetID].second; }
 
 	inline iterator begin() { return data.begin(); }
 	inline const_iterator begin() const { return data.begin(); }

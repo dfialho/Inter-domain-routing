@@ -116,7 +116,7 @@ void Network::stats(StatsTable &statsTable) {
                 continue;
             }
 
-			statsTable.add(hopCount, pathTypes[i].second);
+			statsTable.add(hopCount, pathTypes[i]);
 
         }
 
@@ -150,8 +150,8 @@ void Network::findPathTypes(Node::ID destNodeNetId, PathTypesTable &pathTypes) {
         Link link = linkQueue.pop();
         Node* node = link.getHead();
 
-		PathType newPathType = operation(link.getType(), pathTypes[link.getTail()->getNetid()].second);
-		if(newPathType < pathTypes[node->getNetid()].second) {
+		PathType newPathType = operation(link.getType(), pathTypes[link.getTail()->getNetid()]);
+		if(newPathType < pathTypes[node->getNetid()]) {
 			pathTypes.set(node->getNetid(), node->getId(), newPathType);
 
             linkQueue.pushCustomers(node);
@@ -194,7 +194,7 @@ void Network::findPathHopCounts(Node::ID destNodeNetId, const PathTypesTable& pa
                     linkQueue.push(Link(node, customer, Link::Type::Customer));
             }
 
-			if(pathTypes[node->getNetid()].second == PathType::Customer) {
+			if(pathTypes[node->getNetid()] == PathType::Customer) {
                 for(auto peer : node->getPeers()) {
                     if(peer != link.getTail())
                         linkQueue.push(Link(node, peer, Link::Type::Peer));

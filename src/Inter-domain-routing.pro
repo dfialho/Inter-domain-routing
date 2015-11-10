@@ -26,7 +26,8 @@ SOURCES += \
     frontend/pathtypesplot.cpp \
     frontend/statsplot.cpp \
     frontend/tablewidget.cpp \
-	frontend/mainwindow.cpp
+	frontend/mainwindow.cpp \
+    frontend/pathtypesdialog.cpp
 
 HEADERS  += \
 	backend/Link.h \
@@ -43,8 +44,10 @@ HEADERS  += \
     frontend/tablewidget.h \
 	frontend/mainwindow.h \
 	backend/pathtypestable.h \
-    backend/pathtype.h
+    backend/pathtype.h \
+    frontend/pathtypesdialog.h
 
 FORMS    += \
     frontend/statsdialog.ui \
-	frontend/mainwindow.ui
+	frontend/mainwindow.ui \
+    frontend/pathtypesdialog.ui
