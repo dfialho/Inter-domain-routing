@@ -19,6 +19,8 @@ public:
 		std::fill(data.begin(), data.end(), std::make_pair(0, PathType::None));
 	}
 
+	inline size_t size() const { return data.size(); }
+
 	typedef std::vector<std::pair<Node::ID, PathType>> Table;
 	typedef Table::const_iterator const_iterator;
 	typedef Table::iterator iterator;
