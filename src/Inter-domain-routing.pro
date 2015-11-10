@@ -28,7 +28,8 @@ SOURCES += \
     frontend/tablewidget.cpp \
 	frontend/mainwindow.cpp \
     frontend/pathtypesdialog.cpp \
-    backend/hopcountstable.cpp
+    backend/hopcountstable.cpp \
+    frontend/hopcountsdialog.cpp
 
 HEADERS  += \
 	backend/Link.h \
@@ -47,9 +48,11 @@ HEADERS  += \
 	backend/pathtypestable.h \
     backend/pathtype.h \
     frontend/pathtypesdialog.h \
-    backend/hopcountstable.h
+    backend/hopcountstable.h \
+    frontend/hopcountsdialog.h
 
 FORMS    += \
     frontend/statsdialog.ui \
 	frontend/mainwindow.ui \
-    frontend/pathtypesdialog.ui
+    frontend/pathtypesdialog.ui \
+    frontend/hopcountsdialog.ui
