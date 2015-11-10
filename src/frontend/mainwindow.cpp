@@ -1,5 +1,6 @@
 #include <QMessageBox>
 #include "backend/StatsTable.h"
+#include "hopcountsdialog.h"
 #include "mainwindow.h"
 #include "pathtypesdialog.h"
 #include "statsdialog.h"
@@ -68,7 +69,10 @@ void MainWindow::onButtonStartClicked() {
 	ui->statusbar->showMessage("processing...");
 
 	if(ui->radioButtonHopCounts->isChecked()) {
-		QMessageBox::information(this, "Path Types", "Path Types", QMessageBox::Ok);
+		HopCountsTable hopCounts = network->findPathHopCounts(ui->spinBox->value());
+		HopCountsDialog* dialog = new HopCountsDialog(hopCounts, this);
+		dialog->show();
+
 	} else if(ui->radioButtonPathPrices->isChecked()) {
 		PathTypesTable pathTypes = network->findPathTypes(ui->spinBox->value());
 		PathTypesDialog* dialog = new PathTypesDialog(pathTypes, this);
