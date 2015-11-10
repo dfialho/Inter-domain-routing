@@ -19,7 +19,7 @@ StatsDialog::StatsDialog(const StatsTable& statsTable, QWidget *parent) :
 	pathTypesPlot->setTable(&statsTable);
 	HopCountsPlot* hopCountsPlot = new HopCountsPlot(this);
 	hopCountsPlot->setTable(&statsTable);
-	TableWidget* tableWidget = new TableWidget(statsTable.getMaxHop(), 3, this);
+	TableWidget* tableWidget = new TableWidget(statsTable.getMaxHop() + 1, 3, this);
 	setTable(tableWidget, statsTable);
 
 	this->widgets << tableWidget << pathTypesPlot << hopCountsPlot;
