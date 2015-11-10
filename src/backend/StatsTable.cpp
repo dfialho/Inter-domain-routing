@@ -1,6 +1,6 @@
 #include "StatsTable.h"
 
-void StatsTable::add(unsigned hops, Network::PathType pathType) {
+void StatsTable::add(unsigned hops, PathType pathType) {
 
     if(hops > maxHopCount) {
         maxHopCount = hops;

@@ -13,11 +13,11 @@ public:
     }
 
     inline unsigned getCount(unsigned hops) const { return hopsCounts[hops]; }
-    inline unsigned getCount(Network::PathType pathType) const { return pathTypeCount[pathType]; }
-    inline unsigned getCount(unsigned hops, Network::PathType pathType) const { return counts[hops][pathType]; }
+	inline unsigned getCount(PathType pathType) const { return pathTypeCount[pathType]; }
+	inline unsigned getCount(unsigned hops, PathType pathType) const { return counts[hops][pathType]; }
     inline unsigned getMaxHop() const { return maxHopCount; }
 
-    void add(unsigned hops, Network::PathType pathType);
+	void add(unsigned hops, PathType pathType);
 
 private:
     std::vector<std::array<unsigned, 4>> counts;

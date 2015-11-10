@@ -4,14 +4,14 @@
 #include "Node.h"
 #include "NetworkIdGenerator.h"
 #include "Link.h"
+#include "pathtypestable.h"
+#include "pathtype.h"
 
 class StatsTable;
 
 class Network {
 
 public:
-    enum PathType { Customer = 0, Peer = 1, Provider = 2, None = 3 };
-    typedef std::vector<PathType> PathTypeList;
     typedef std::vector<unsigned> HopCountList;
     typedef std::unique_ptr<Node> NodeHolder;
     typedef std::vector<NodeHolder> NodeHolderList;
@@ -22,7 +22,7 @@ public:
     void addLink(Node::ID tailId, Node::ID headId, Link::Type type);
     void print() const;
 
-    PathTypeList findPathTypes(Node::ID destNodeId);
+	PathTypesTable findPathTypes(Node::ID destNodeId);
     HopCountList findPathHopCounts(Node::ID destNodeId);
     void stats(StatsTable& statsTable);
 
@@ -34,10 +34,10 @@ private:
     NodeHolderList nodes;           // all the nodes in the network
     NetworkIdGenerator idGenerator; // generates and holds the nodes ids
 
-    PathType operation(Link::Type linkType, Network::PathType pathType);
+	PathType operation(Link::Type linkType, PathType pathType);
 
-    void findPathTypes(Node::ID destNodeNetId, PathTypeList& pathTypes);
-    void findPathHopCounts(Node::ID destNodeNetId, const PathTypeList& pathTypes, HopCountList& hopCounts);
+	void findPathTypes(Node::ID destNodeNetId, PathTypesTable& pathTypes);
+	void findPathHopCounts(Node::ID destNodeNetId, const PathTypesTable& pathTypes, HopCountList& hopCounts);
 
 };
 

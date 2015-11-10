@@ -67,15 +67,15 @@ void StatsDialog::setTable(TableWidget* tableWidget, const StatsTable &statsTabl
 		tableWidget->setVerticalHeaderItem(i, item);
 
 		// add count for the customer
-		item = TableWidget::itemFactory(QString::number(statsTable.getCount(i, Network::PathType::Customer)));
-		tableWidget->setItem(i, Network::PathType::Customer, item);
+		item = TableWidget::itemFactory(QString::number(statsTable.getCount(i, PathType::Customer)));
+		tableWidget->setItem(i, PathType::Customer, item);
 
 		// add count for the peer
-		item = TableWidget::itemFactory(QString::number(statsTable.getCount(i, Network::PathType::Peer)));
-		tableWidget->setItem(i, Network::PathType::Peer, item);
+		item = TableWidget::itemFactory(QString::number(statsTable.getCount(i, PathType::Peer)));
+		tableWidget->setItem(i, PathType::Peer, item);
 
 		// add count for the provider
-		item = TableWidget::itemFactory(QString::number(statsTable.getCount(i, Network::PathType::Provider)));
-		tableWidget->setItem(i, Network::PathType::Provider, item);
+		item = TableWidget::itemFactory(QString::number(statsTable.getCount(i, PathType::Provider)));
+		tableWidget->setItem(i, PathType::Provider, item);
 	}
 }

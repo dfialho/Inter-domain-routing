@@ -5,7 +5,7 @@
 QVector<double> PathTypesPlot::dataX() const {
 
 	QVector<double> types;
-	types << Network::PathType::Customer << Network::PathType::Peer << Network::PathType::Provider;
+	types << PathType::Customer << PathType::Peer << PathType::Provider;
 
 	return types;
 }
@@ -17,16 +17,16 @@ double PathTypesPlot::rangeX() const {
 QVector<double> PathTypesPlot::dataY() const {
 
 	QVector<double> counts;
-	counts << statsTable->getCount(Network::PathType::Customer) <<
-			  statsTable->getCount(Network::PathType::Peer) <<
-			  statsTable->getCount(Network::PathType::Provider);
+	counts << statsTable->getCount(PathType::Customer) <<
+			  statsTable->getCount(PathType::Peer) <<
+			  statsTable->getCount(PathType::Provider);
 
 	return counts;
 }
 
 double PathTypesPlot::rangeY() const {
 
-	return std::max(std::max(statsTable->getCount(Network::PathType::Customer),
-							 statsTable->getCount(Network::PathType::Peer)),
-					statsTable->getCount(Network::PathType::Provider));
+	return std::max(std::max(statsTable->getCount(PathType::Customer),
+							 statsTable->getCount(PathType::Peer)),
+					statsTable->getCount(PathType::Provider));
 }

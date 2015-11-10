@@ -71,14 +71,14 @@ void Network::print() const {
     }
 }
 
-Network::PathTypeList Network::findPathTypes(Node::ID destNodeId) {
+PathTypesTable Network::findPathTypes(Node::ID destNodeId) {
 
     // get the destination node network id
     Node::ID destNodeNetId = idGenerator.getNetworkId(destNodeId);
     // initialize all nodes with path type = None
-    PathTypeList pathTypes(nodes.size(), PathType::None);
+	PathTypesTable pathTypes(nodes.size());
 
-    findPathTypes(destNodeNetId, pathTypes);
+	findPathTypes(destNodeNetId, pathTypes);
     return pathTypes;
 }
 
@@ -87,7 +87,7 @@ Network::HopCountList Network::findPathHopCounts(Node::ID destNodeId) {
     // get the destination node network id
     Node::ID destNodeNetId = idGenerator.getNetworkId(destNodeId);
 
-    PathTypeList pathTypes = findPathTypes(destNodeId);
+	PathTypesTable pathTypes = findPathTypes(destNodeId);
     // initialize all nodes with path type = None
     HopCountList hopCounts(nodes.size(), UINT_MAX);
 
@@ -98,7 +98,7 @@ Network::HopCountList Network::findPathHopCounts(Node::ID destNodeId) {
 void Network::stats(StatsTable &statsTable) {
 
     // initialize all nodes with path type = None
-    PathTypeList pathTypes(nodes.size(), PathType::None);
+	PathTypesTable pathTypes(nodes.size());
     // initialize all nodes with path type = None
     HopCountList hopCounts(nodes.size(), UINT_MAX);
 
@@ -116,18 +116,18 @@ void Network::stats(StatsTable &statsTable) {
                 continue;
             }
 
-            statsTable.add(hopCount, pathTypes[i]);
+			statsTable.add(hopCount, pathTypes[i].second);
 
         }
 
-        fill(pathTypes.begin(), pathTypes.end(), PathType::None);
+		pathTypes.reset();
         fill(hopCounts.begin(), hopCounts.end(), UINT_MAX);
     }
 }
 
 ///// Begin Private /////
 
-Network::PathType Network::operation(Link::Type linkType, Network::PathType pathType) {
+PathType Network::operation(Link::Type linkType, PathType pathType) {
     static PathType table[3][5] = {
             {PathType::Provider, PathType::Provider, PathType::Provider, PathType::Provider, PathType::None},
             {PathType::Peer,     PathType::Peer,     PathType::None,     PathType::None,     PathType::None},
@@ -137,10 +137,10 @@ Network::PathType Network::operation(Link::Type linkType, Network::PathType path
     return table[linkType][pathType];
 }
 
-void Network::findPathTypes(Node::ID destNodeNetId, Network::PathTypeList &pathTypes) {
+void Network::findPathTypes(Node::ID destNodeNetId, PathTypesTable &pathTypes) {
 
     LinkPriorityQueue linkQueue;
-    pathTypes[destNodeNetId] = PathType::Customer;
+	pathTypes.set(destNodeNetId, nodes[destNodeNetId]->getId(), PathType::Customer);
 
     linkQueue.pushCustomers(nodes[destNodeNetId].get());
     linkQueue.pushPeers(nodes[destNodeNetId].get());
@@ -150,9 +150,9 @@ void Network::findPathTypes(Node::ID destNodeNetId, Network::PathTypeList &pathT
         Link link = linkQueue.pop();
         Node* node = link.getHead();
 
-        PathType newPathType = operation(link.getType(), pathTypes[link.getTail()->getNetid()]);
-        if(newPathType < pathTypes[node->getNetid()]) {
-            pathTypes[node->getNetid()] = newPathType;
+		PathType newPathType = operation(link.getType(), pathTypes[link.getTail()->getNetid()].second);
+		if(newPathType < pathTypes[node->getNetid()].second) {
+			pathTypes.set(node->getNetid(), node->getId(), newPathType);
 
             linkQueue.pushCustomers(node);
 
@@ -164,7 +164,7 @@ void Network::findPathTypes(Node::ID destNodeNetId, Network::PathTypeList &pathT
     }
 }
 
-void Network::findPathHopCounts(Node::ID destNodeNetId, const PathTypeList& pathTypes,
+void Network::findPathHopCounts(Node::ID destNodeNetId, const PathTypesTable& pathTypes,
                                 Network::HopCountList &hopCounts) {
 
     hopCounts[destNodeNetId] = 0;
@@ -194,7 +194,7 @@ void Network::findPathHopCounts(Node::ID destNodeNetId, const PathTypeList& path
                     linkQueue.push(Link(node, customer, Link::Type::Customer));
             }
 
-            if(pathTypes[node->getNetid()] == PathType::Customer) {
+			if(pathTypes[node->getNetid()].second == PathType::Customer) {
                 for(auto peer : node->getPeers()) {
                     if(peer != link.getTail())
                         linkQueue.push(Link(node, peer, Link::Type::Peer));
