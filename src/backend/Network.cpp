@@ -82,14 +82,14 @@ PathTypesTable Network::findPathTypes(Node::ID destNodeId) {
     return pathTypes;
 }
 
-Network::HopCountList Network::findPathHopCounts(Node::ID destNodeId) {
+HopCountsTable Network::findPathHopCounts(Node::ID destNodeId) {
 
     // get the destination node network id
     Node::ID destNodeNetId = idGenerator.getNetworkId(destNodeId);
 
 	PathTypesTable pathTypes = findPathTypes(destNodeId);
     // initialize all nodes with path type = None
-    HopCountList hopCounts(nodes.size(), UINT_MAX);
+	HopCountsTable hopCounts(pathTypes);
 
     findPathHopCounts(destNodeNetId, pathTypes, hopCounts);
     return hopCounts;
@@ -100,7 +100,7 @@ void Network::stats(StatsTable &statsTable) {
     // initialize all nodes with path type = None
 	PathTypesTable pathTypes(nodes.size());
     // initialize all nodes with path type = None
-    HopCountList hopCounts(nodes.size(), UINT_MAX);
+	HopCountsTable hopCounts(pathTypes);
 
     for(auto& node : nodes) {
 
@@ -121,7 +121,7 @@ void Network::stats(StatsTable &statsTable) {
         }
 
 		pathTypes.reset();
-        fill(hopCounts.begin(), hopCounts.end(), UINT_MAX);
+		hopCounts.reset();
     }
 }
 
@@ -165,7 +165,7 @@ void Network::findPathTypes(Node::ID destNodeNetId, PathTypesTable &pathTypes) {
 }
 
 void Network::findPathHopCounts(Node::ID destNodeNetId, const PathTypesTable& pathTypes,
-                                Network::HopCountList &hopCounts) {
+								HopCountsTable &hopCounts) {
 
     hopCounts[destNodeNetId] = 0;
     std::queue<Link> linkQueue;
