@@ -18,8 +18,6 @@ MainWindow::MainWindow(QWidget *parent) :
 
 	// put a hint in the line edit
 	ui->lineEdit->setPlaceholderText("network file path");
-	/** DEBUG **/
-	ui->lineEdit->setText("/home/david/Development/IST/ADRC/Inter-domain-routing/tests/small.txt");
 
 	// connects
 	connect(ui->buttonLoad, SIGNAL(clicked(bool)), this, SLOT(onButtonLoadClicked()));
