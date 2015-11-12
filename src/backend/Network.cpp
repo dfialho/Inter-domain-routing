@@ -185,8 +185,9 @@ void Network::findPathHopCounts(Node::ID destNodeNetId, const PathTypesTable& pa
         linkQueue.pop();
         Node* node = link.getHead();
 
+		PathType newPathType = operation(link.getType(), pathTypes[link.getTail()->getNetid()]);
         unsigned newHopCount = hopCounts[link.getTail()->getNetid()] + 1;
-        if(newHopCount < hopCounts[node->getNetid()]) {
+		if(newPathType <= pathTypes[node->getNetid()] && newHopCount < hopCounts[node->getNetid()]) {
             hopCounts[node->getNetid()] = newHopCount;
 
             for(auto customer : node->getCustomers()) {
