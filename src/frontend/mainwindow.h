@@ -20,6 +20,10 @@ private slots:
 	void onButtonLoadClicked();
 	void onButtonStartClicked();
 
+	void onRadioButtonStatsClicked();
+	void onRadioButtonHopCountsClicked();
+	void onRadioButtonPathTypesClicked();
+
 private:
 	Ui::MainWindow *ui;
 	std::shared_ptr<Network> network;

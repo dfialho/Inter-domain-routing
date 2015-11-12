@@ -22,6 +22,9 @@ MainWindow::MainWindow(QWidget *parent) :
 	// connects
 	connect(ui->buttonLoad, SIGNAL(clicked(bool)), this, SLOT(onButtonLoadClicked()));
 	connect(ui->buttonStart, SIGNAL(clicked(bool)), this, SLOT(onButtonStartClicked()));
+	connect(ui->radioButtonStats, SIGNAL(clicked(bool)), this, SLOT(onRadioButtonStatsClicked()));
+	connect(ui->radioButtonHopCounts, SIGNAL(clicked(bool)), this, SLOT(onRadioButtonHopCountsClicked()));
+	connect(ui->radioButtonPathPrices, SIGNAL(clicked(bool)), this, SLOT(onRadioButtonPathTypesClicked()));
 }
 
 MainWindow::~MainWindow()
@@ -92,4 +95,19 @@ void MainWindow::onButtonStartClicked() {
 
 	// replace status message
 	ui->statusbar->showMessage(currentMessage);
+}
+
+void MainWindow::onRadioButtonStatsClicked() {
+	ui->labelSpinBox->setEnabled(false);
+	ui->spinBox->setEnabled(false);
+}
+
+void MainWindow::onRadioButtonHopCountsClicked() {
+	ui->labelSpinBox->setEnabled(true);
+	ui->spinBox->setEnabled(true);
+}
+
+void MainWindow::onRadioButtonPathTypesClicked() {
+	ui->labelSpinBox->setEnabled(true);
+	ui->spinBox->setEnabled(true);
 }
