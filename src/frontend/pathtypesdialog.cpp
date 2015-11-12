@@ -1,10 +1,11 @@
 #include "pathtypesdialog.h"
 #include "tablewidget.h"
 #include "ui_pathtypesdialog.h"
+#include "backend/Network.h"
 
 #include <QVBoxLayout>
 
-PathTypesDialog::PathTypesDialog(const PathTypesTable &pathTypes, QWidget *parent) :
+PathTypesDialog::PathTypesDialog(const Network::NodeHolderList& nodes, const PathTypesTable &pathTypes, QWidget *parent) :
 	QDialog(parent),
 	ui(new Ui::PathTypesDialog) {
 
@@ -48,6 +49,15 @@ PathTypesDialog::PathTypesDialog(const PathTypesTable &pathTypes, QWidget *paren
 
 		tableWidget->setItem(i, 0, TableWidget::itemFactory(type));
 	}
+
+	// set nodes ids as vertical headers
+	QStringList verticalLabels;
+
+	for(const auto& node : nodes) {
+		verticalLabels << QString::number(node->getId());
+	}
+
+	tableWidget->setVerticalHeaderLabels(verticalLabels);
 
 	this->setLayout(new QVBoxLayout(this));
 	this->layout()->addWidget(tableWidget);

@@ -68,12 +68,12 @@ void MainWindow::onButtonStartClicked() {
 
 	if(ui->radioButtonHopCounts->isChecked()) {
 		HopCountsTable hopCounts = network->findPathHopCounts(ui->spinBox->value());
-		HopCountsDialog* dialog = new HopCountsDialog(hopCounts, this);
+		HopCountsDialog* dialog = new HopCountsDialog(network->getNodes(), hopCounts, this);
 		dialog->show();
 
 	} else if(ui->radioButtonPathPrices->isChecked()) {
 		PathTypesTable pathTypes = network->findPathTypes(ui->spinBox->value());
-		PathTypesDialog* dialog = new PathTypesDialog(pathTypes, this);
+		PathTypesDialog* dialog = new PathTypesDialog(network->getNodes(), pathTypes, this);
 		dialog->show();
 
 	} else if(ui->radioButtonStats->isChecked()) {

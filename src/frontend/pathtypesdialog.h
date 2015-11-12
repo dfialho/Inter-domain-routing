@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include "backend/pathtypestable.h"
+#include "backend/Network.h"
 
 namespace Ui {
 class PathTypesDialog;
@@ -12,7 +13,7 @@ class PathTypesDialog : public QDialog {
 	Q_OBJECT
 
 public:
-	explicit PathTypesDialog(const PathTypesTable& pathTypes, QWidget *parent = 0);
+	explicit PathTypesDialog(const Network::NodeHolderList& nodes, const PathTypesTable& pathTypes, QWidget *parent = 0);
 	~PathTypesDialog();
 
 private:

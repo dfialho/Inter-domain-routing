@@ -4,7 +4,8 @@
 
 #include <QVBoxLayout>
 
-HopCountsDialog::HopCountsDialog(const HopCountsTable &hopCounts, QWidget *parent) :
+HopCountsDialog::HopCountsDialog(const Network::NodeHolderList& nodes,
+								 const HopCountsTable &hopCounts, QWidget *parent) :
 	QDialog(parent),
 	ui(new Ui::HopCountsDialog) {
 
@@ -49,6 +50,15 @@ HopCountsDialog::HopCountsDialog(const HopCountsTable &hopCounts, QWidget *paren
 	}
 
 	tableWidget->setHorizontalHeaderLabels(horizontalLabels);
+
+	// set nodes ids as vertical headers
+	QStringList verticalLabels;
+
+	for(const auto& node : nodes) {
+		verticalLabels << QString::number(node->getId());
+	}
+
+	tableWidget->setVerticalHeaderLabels(verticalLabels);
 
 	this->setLayout(new QVBoxLayout(this));
 	this->layout()->addWidget(tableWidget);
