@@ -24,6 +24,8 @@ StatsDialog::StatsDialog(const StatsTable& statsTable, QWidget *parent) :
 
 	this->widgets << tableWidget << pathTypesPlot << hopCountsPlot;
 
+	ui->noneCountValue->setText(QString::number(statsTable.getCount(PathType::None)));
+
 	// hide all widgets - only the current widget is supposed to be shown
 	for(auto widget : widgets) {
 		widget->hide();
@@ -77,5 +79,6 @@ void StatsDialog::setTable(TableWidget* tableWidget, const StatsTable &statsTabl
 		// add count for the provider
 		item = TableWidget::itemFactory(QString::number(statsTable.getCount(i, PathType::Provider)));
 		tableWidget->setItem(i, PathType::Provider, item);
+
 	}
 }

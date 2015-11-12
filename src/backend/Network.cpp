@@ -108,16 +108,7 @@ void Network::stats(StatsTable &statsTable) {
         findPathHopCounts(node->getNetid(), pathTypes, hopCounts);
 
 		for(unsigned i = 0; i < nodeCount(); i++) {
-
-            unsigned hopCount = hopCounts[i];
-
-            if(hopCount == UINT_MAX) {
-                // ignore None paths for now
-                continue;
-            }
-
-			statsTable.add(hopCount, pathTypes[i]);
-
+			statsTable.add(hopCounts[i], pathTypes[i]);
         }
 
 		pathTypes.reset();
